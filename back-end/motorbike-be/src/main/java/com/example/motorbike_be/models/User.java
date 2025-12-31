@@ -45,5 +45,9 @@ public class User extends Auditing{
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 }
 
