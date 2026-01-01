@@ -25,6 +25,8 @@ public class Product extends Auditing{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(unique = true)
     private String productName;
 
     @NotNull(message = "Giá không được để trống")
@@ -33,7 +35,6 @@ public class Product extends Auditing{
     private BigDecimal price;
 
     private BigDecimal finalPrice;
-    @NotBlank(message = "Ảnh không được để trống")
     @Column(nullable = false)
     private String image;
 
@@ -41,6 +42,7 @@ public class Product extends Auditing{
     @Column(nullable = false, length = 1000)
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
     @NotNull(message = "Danh mục sản phẩm không được để trống")

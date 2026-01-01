@@ -14,6 +14,7 @@ public class CustomerResponse {
     private String email;
     private String avatar;
     private String phoneNumber;
+    private String status;
     private String roleId;
     private String createdAt;
     private String updatedAt;

@@ -19,14 +19,14 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Service extends Auditing {
+public class Services extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotBlank(message = "Tên dịch vụ không được để trống")
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 255, unique = true)
     private String serviceName;
 
     @NotBlank(message = "Mô tả không được để trống")
