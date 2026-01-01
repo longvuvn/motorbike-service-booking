@@ -12,6 +12,7 @@ import com.example.motorbike_be.repositories.RoleRepository;
 import com.example.motorbike_be.services.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -53,6 +54,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponse createCustomer(CustomerRequest customerRequest) {
         Role customerRole = roleRepository.findByName("CUSTOMER");
+        if(customerRepository.existsByEmail(customerRequest.getEmail())){
+            throw new DataIntegrityViolationException("Email already exists");
+        }
+        if(customerRepository.existsByFullName(customerRequest.getFullName())){
+            throw new DataIntegrityViolationException("Full Name already exists");
+        }
         Customer customer = modelMapper.map(customerRequest, Customer.class);
         customer.setStatus(UserStatus.ACTIVE);
         customer.setAvatar(AVATAR_URL);

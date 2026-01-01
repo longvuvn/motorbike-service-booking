@@ -18,8 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Customer extends User {
 
-    @NotBlank(message = "Số điện thoại được không được để trống")
-    @NotEmpty(message = "Thiếu số điện thoại")
     @Column(nullable = false, unique = true)
     private String phoneNumber;
 

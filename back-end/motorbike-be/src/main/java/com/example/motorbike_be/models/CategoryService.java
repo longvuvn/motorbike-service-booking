@@ -28,5 +28,5 @@ public class CategoryService extends Auditing{
     private CategoryStatus status;
 
     @OneToMany(mappedBy = "categoryService", fetch = FetchType.LAZY)
-    private List<Service> services;
+    private List<Services> services;
 }
