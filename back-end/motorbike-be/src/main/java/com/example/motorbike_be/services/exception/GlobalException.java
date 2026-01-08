@@ -7,10 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class GlobalException {
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorHandler> handleNoResourceFoundException(NoResourceFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorHandler(
+                        HttpStatus.NOT_FOUND.value(),
+                        "API không tồn tại"
+                )
+        );
+    }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorHandler> handleRuntimeException(RuntimeException e) {
         return ResponseEntity

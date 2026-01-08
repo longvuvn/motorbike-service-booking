@@ -25,16 +25,13 @@ public class Address extends Auditing{
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Họ và tên không được để trống")
-    @NotEmpty(message = "Thiếu Họ Và Tên")
+
     private String fullName;
 
-    @NotEmpty(message = "Thiếu số điện thoại")
-    @NotBlank(message = "Số điện thoại không được để trống")
+
     private String phoneNumber;
 
-    @NotBlank(message = "Địa chỉ cụ thể không để trống")
-    @NotEmpty(message = "Thiếu địa chỉ cụ thể")
+
     @Column(nullable = false)
     private String addressDetail;
 
@@ -46,7 +43,7 @@ public class Address extends Auditing{
     private AddressStatus typeAddress;
 
     @Column(nullable = false)
-    private boolean idDefault;
+    private boolean isDefault;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

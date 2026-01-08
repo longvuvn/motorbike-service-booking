@@ -6,9 +6,9 @@ export default function User() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <nav
-      className="fixed top-0 left-0 w-full h-44 flex justify-center items-center text-white z-50 bg-gradient-to-b from-black/60 to-transparent">
-      <div className="hidden md:flex justify-center items-center gap-x-12 lg:gap-x-80 w-full">
-        <div className="flex space-x-4 lg:space-x-8">
+      className="fixed top-0 left-0 w-full min-h-16 text-white bg-gradient-to-b from-black/60 to-transparent z-50">
+      <div className="hidden md:grid items-center grid-cols-3 px-6 lg:px-12 xl:px-20 2xl:px-40 w-full max-w-[1600px] mx-auto py-4 gap-4">
+        <div className="flex items-center space-x-4 lg:space-x-8">
           <Link
             to="/"
             className="group relative py-2 font-bold uppercase tracking-widest text-xs transition-colors hover:text-red-500"
@@ -31,10 +31,12 @@ export default function User() {
             <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-red-500 transition-all group-hover:w-full"></span>
           </Link>
         </div>
+
         <div className="flex justify-center items-center transform transition-transform hover:scale-105">
           <Logo variant="white" height={45} />
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-14">
+
+        <div className="flex items-center justify-end space-x-6 lg:space-x-14">
           <Link
             to="/login"
             className="group relative py-2 font-bold uppercase tracking-widest text-xs hover:text-red-500 transition-colors"
@@ -52,7 +54,7 @@ export default function User() {
         </div>
       </div>
 
-      <div className="md:hidden flex justify-between items-center w-full">
+      <div className="md:hidden flex justify-between items-center w-full px-4 py-3">
         <div className="flex items-center transform transition-transform hover:scale-105">
           <Logo variant="white" height={35} />
         </div>
@@ -95,7 +97,7 @@ export default function User() {
               Service
             </Link>
             <Link
-              to="/services"
+              to="/product"
               className="font-bold uppercase tracking-widest text-xs hover:text-red-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >

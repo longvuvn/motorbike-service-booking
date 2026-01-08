@@ -7,13 +7,15 @@ import Home from "./pages/Home";
 function App() {
   return (
     <BrowserRouter>
-      <div>
+      <div className="min-h-screen flex flex-col">
         <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </main>
       </div>
     </BrowserRouter>
   );
