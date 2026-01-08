@@ -32,8 +32,6 @@ const FormikYupForm = () => {
           Cookies.set('refreshToken', refreshToken, { expires: 7, secure: true, sameSite: 'strict' });
           const decodedToken = jwtDecode(accessToken);
           localStorage.setItem("user", JSON.stringify(decodedToken));
-          alert("Đăng nhập thành công!");
-
           if (decodedToken?.role === 'ADMIN') {
             navigate("/admin");
           } else {

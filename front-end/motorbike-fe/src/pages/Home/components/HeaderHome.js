@@ -5,7 +5,7 @@ import heroBike from "../../../assets/image/anh-xe-moto-do_041858346-removebg-pr
 export default function HeaderHome() {
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-950 text-white overflow-hidden flex items-center">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 py-10 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+      <div className="max-w-7xl mx-auto px-9 md:px-12 py-10 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
         <div className="z-10 space-y-8">
           <h1 className="text-2xl md:text-4xl lg:text-4xl font-black leading-tight">
             Find Your Safe
