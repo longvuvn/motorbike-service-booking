@@ -56,4 +56,28 @@ public class GlobalException {
                         )
                 );
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorHandler> handleIllegalArgumentException(IllegalArgumentException e){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new ErrorHandler(
+                                HttpStatus.BAD_REQUEST.value(),
+                                e.getMessage()
+                        )
+                );
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ErrorHandler> handleNumberFormatException(NumberFormatException e){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new ErrorHandler(
+                                HttpStatus.BAD_REQUEST.value(),
+                                e.getMessage()
+                        )
+                );
+    }
 }

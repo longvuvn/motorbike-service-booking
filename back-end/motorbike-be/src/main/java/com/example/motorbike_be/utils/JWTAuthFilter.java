@@ -1,6 +1,7 @@
 package com.example.motorbike_be.utils;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,11 +33,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             String username = jwtUtil.extractUsername(jwt);
             if(Objects.nonNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())){
                 UserDetails userDetails = userDetailService.loadUserByUsername(username);
-
                 if(jwtUtil.validateToken(jwt)){
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }

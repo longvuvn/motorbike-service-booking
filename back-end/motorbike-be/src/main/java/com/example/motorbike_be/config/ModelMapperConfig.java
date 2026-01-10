@@ -1,13 +1,17 @@
 package com.example.motorbike_be.config;
 
 
+import com.example.motorbike_be.dto.booking.request.BookingRequest;
+import com.example.motorbike_be.dto.booking.request.BookingServiceRequest;
 import com.example.motorbike_be.dto.product.request.ProductRequest;
 import com.example.motorbike_be.dto.product.request.ProductUpdateRequest;
 import com.example.motorbike_be.dto.service.request.ServiceRequest;
 import com.example.motorbike_be.dto.service.request.ServiceUpdateRequest;
+import com.example.motorbike_be.models.Booking;
 import com.example.motorbike_be.models.Product;
 import com.example.motorbike_be.models.Services;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +47,6 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> {
                     mapper.skip(Services::setId);
                 });
-
         return modelMapper;
     }
 }
