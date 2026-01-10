@@ -37,7 +37,6 @@ public class JWTUtil {
                 .claim("userId", user.getId().toString())
                 .claim("avatar", user.getAvatar())
                 .claim("fullName", user.getFullName())
-                .claim("role", user.getRole().getName())
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(getSingingKey())

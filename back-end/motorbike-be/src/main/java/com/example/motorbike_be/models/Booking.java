@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,19 +28,20 @@ public class Booking extends Auditing{
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     private String note;
     private BigDecimal totalPrice;
 
-    @NotBlank(message = "Vui lòng chọn ngày/giờ")
     private Instant bookingDate;
+
+    @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookingService> bookingServices;
 
     @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
