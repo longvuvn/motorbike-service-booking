@@ -36,7 +36,7 @@ public class SecurityConfig {
                                     "/api/v1/auth/login",
                                     "/api/v1/auth/refresh",
                                     "/api/v1/auth/logout").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

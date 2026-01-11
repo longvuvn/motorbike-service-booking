@@ -24,14 +24,8 @@ public class Address extends Auditing{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-
     private String fullName;
-
-
     private String phoneNumber;
-
-
     @Column(nullable = false)
     private String addressDetail;
 
