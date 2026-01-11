@@ -7,17 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.swing.*;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRequest {
-    private String customerId;
-    private String totalPrice;
+public class OrderUpdateRequest {
     @NotBlank(message = "Address is required")
     private String addressId;
     @Valid
-    private List<OrderDetailRequest> orderDetailList;
+    private List<OrderDetailUpdate> orderDetailUpdates;
+    private String status;
 }

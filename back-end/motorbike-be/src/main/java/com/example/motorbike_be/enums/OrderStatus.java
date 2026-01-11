@@ -1,8 +1,10 @@
 package com.example.motorbike_be.enums;
 
 public enum OrderStatus {
-    ORDERED,
-    PREPARING,
-    SERVED,
-    CANCELLED
+    CANCELLED,
+    RETURNED,
+    PENDING,
+    CONFIRMED,
+    SHIPPING,
+    COMPLETED
 }

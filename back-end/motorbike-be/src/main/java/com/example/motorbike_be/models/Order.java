@@ -25,13 +25,14 @@ public class Order extends Auditing{
 
     private BigDecimal totalAmount;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetail;
 
     @ManyToOne(fetch = FetchType.LAZY)

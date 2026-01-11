@@ -1,15 +1,16 @@
 package com.example.motorbike_be.config;
 
 
+import com.example.motorbike_be.dto.address.request.AddressRequest;
 import com.example.motorbike_be.dto.booking.request.BookingRequest;
 import com.example.motorbike_be.dto.booking.request.BookingServiceRequest;
+import com.example.motorbike_be.dto.order.request.OrderRequest;
+import com.example.motorbike_be.dto.order.request.OrderUpdateRequest;
 import com.example.motorbike_be.dto.product.request.ProductRequest;
 import com.example.motorbike_be.dto.product.request.ProductUpdateRequest;
 import com.example.motorbike_be.dto.service.request.ServiceRequest;
 import com.example.motorbike_be.dto.service.request.ServiceUpdateRequest;
-import com.example.motorbike_be.models.Booking;
-import com.example.motorbike_be.models.Product;
-import com.example.motorbike_be.models.Services;
+import com.example.motorbike_be.models.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
@@ -46,6 +47,12 @@ public class ModelMapperConfig {
         modelMapper.typeMap(ServiceUpdateRequest.class, Services.class)
                 .addMappings(mapper -> {
                     mapper.skip(Services::setId);
+                });
+
+        modelMapper.typeMap(OrderUpdateRequest.class, Order.class)
+                .addMappings(mapper -> {
+                    mapper.skip(Order::setId);
+                    mapper.skip(Order::setOrderDetail);
                 });
         return modelMapper;
     }
