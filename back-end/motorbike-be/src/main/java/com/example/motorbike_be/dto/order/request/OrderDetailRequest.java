@@ -13,5 +13,4 @@ public class OrderDetailRequest {
     @NotBlank(message = "Product id is required")
     private String productId;
     private int quantity;
-    private String price;
 }

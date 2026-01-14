@@ -29,7 +29,6 @@ public class Product extends Auditing{
     @Column(unique = true)
     private String productName;
 
-    @NotNull(message = "Giá không được để trống")
     @DecimalMin(value = "0.0", inclusive = false, message = "Giá thấp nhất phải lớn hơn 0")
     @Column(nullable = false)
     private BigDecimal price;
@@ -38,14 +37,12 @@ public class Product extends Auditing{
     @Column(nullable = false)
     private String image;
 
-    @NotBlank(message = "Mô tả không được để trống")
     @Column(nullable = false, length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    @NotNull(message = "Danh mục sản phẩm không được để trống")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private CategoryProduct categoryProduct;

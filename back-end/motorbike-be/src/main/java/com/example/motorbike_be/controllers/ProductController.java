@@ -9,8 +9,11 @@ import com.example.motorbike_be.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -48,9 +51,10 @@ public class ProductController {
         );
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<ProductResponse>> create(@Valid @RequestBody ProductRequest request){
-        ProductResponse product = productService.createProduct(request);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<ProductResponse>> create(@Valid @RequestPart("product") ProductRequest request,
+                                                               @RequestPart("image") MultipartFile image) throws IOException {
+        ProductResponse product = productService.createProduct(request, image);
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         HttpStatus.OK.value(),
@@ -60,6 +64,7 @@ public class ProductController {
                 )
         );
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> update(@PathVariable String id, @Valid @RequestBody ProductUpdateRequest updateRequest){

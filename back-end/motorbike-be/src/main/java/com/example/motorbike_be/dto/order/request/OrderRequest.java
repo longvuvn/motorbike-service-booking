@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequest {
     private String customerId;
-    private String totalPrice;
     @NotBlank(message = "Address is required")
     private String addressId;
     @Valid
