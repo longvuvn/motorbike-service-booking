@@ -20,13 +20,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     @SuppressWarnings("unchecked")
     @Override
     public String uploadImage(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File không được để trống");
+        }
         Map<String, Object> result =
                 cloudinary.uploader().upload(
                         file.getBytes(),
-                        ObjectUtils.asMap(
-                                "folder", "avatars",
-                                "resource_type", "image"
-                        )
+                        ObjectUtils.asMap("resource_type", "auto")
                 );
         return String.valueOf(result.get("secure_url"));
     }

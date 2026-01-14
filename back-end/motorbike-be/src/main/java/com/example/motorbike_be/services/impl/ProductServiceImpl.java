@@ -9,13 +9,16 @@ import com.example.motorbike_be.models.CategoryProduct;
 import com.example.motorbike_be.models.Product;
 import com.example.motorbike_be.repositories.CategoryProductRepository;
 import com.example.motorbike_be.repositories.ProductRepository;
+import com.example.motorbike_be.services.CloudinaryService;
 import com.example.motorbike_be.services.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
     private final CategoryProductRepository categoryProductRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public List<ProductResponse>  getAllProducts() {
@@ -48,8 +52,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse createProduct(ProductRequest productRequest) {
+    public ProductResponse createProduct(ProductRequest productRequest, MultipartFile image) throws IOException {
         UUID uuid = UUID.fromString(productRequest.getCategoryId());
+        String imageUrl = cloudinaryService.uploadImage(image);
         CategoryProduct categoryProduct = categoryProductRepository.findById(uuid)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
         if(productRepository.existsByProductName(productRequest.getProductName())){
@@ -57,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Product product = modelMapper.map(productRequest, Product.class);
         product.setCategoryProduct(categoryProduct);
+        product.setImage(imageUrl);
         product.setStatus(ProductStatus.IN_STOCK);
         return modelMapper.map(productRepository.save(product), ProductResponse.class);
     }

@@ -80,7 +80,11 @@ public class OrderServiceImpl implements OrderService {
             orderDetailRepository.save(orderDetail);
             orderDetails.add(orderDetail);
         }
-        order.setTotalAmount(new BigDecimal(request.getTotalPrice()));
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (OrderDetail detail : orderDetails) {
+            totalAmount = totalAmount.add(detail.getTotalPrice());
+        }
+        order.setTotalAmount(totalAmount);
         order.setOrderDetail(orderDetails);
         Order savedOrder = orderRepository.save(order);
         OrderResponse orderResponse = modelMapper.map(savedOrder, OrderResponse.class);
@@ -111,11 +115,12 @@ public class OrderServiceImpl implements OrderService {
             order.setDeletedAt(Instant.now());
         }
         for(OrderDetailUpdate updateRequest : request.getOrderDetailUpdates()){
+            BigDecimal totalPrice = new BigDecimal(updateRequest.getQuantity());
             UUID orderDetailId = UUID.fromString(updateRequest.getId());
             OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
                     .orElseThrow(() -> new RuntimeException("Order detail not found"));
             orderDetail.setQuantity(updateRequest.getQuantity());
-            orderDetail.setTotalPrice(orderDetail.getProduct().getFinalPrice().multiply(new BigDecimal(updateRequest.getQuantity())));
+            orderDetail.setTotalPrice(orderDetail.getProduct().getFinalPrice().multiply(totalPrice));
             orderDetailRepository.save(orderDetail);
         }
 

@@ -4,6 +4,8 @@ package com.example.motorbike_be.services.exception;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -76,6 +78,29 @@ public class GlobalException {
                 .body(
                         new ErrorHandler(
                                 HttpStatus.BAD_REQUEST.value(),
+                                e.getMessage()
+                        )
+                );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorHandler> handleBadCredentialsException(BadCredentialsException e){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(
+                        new ErrorHandler(
+                                HttpStatus.UNAUTHORIZED.value(),
+                                e.getMessage()
+                        )
+                );
+    }
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorHandler> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(
+                        new ErrorHandler(
+                                HttpStatus.METHOD_NOT_ALLOWED.value(),
                                 e.getMessage()
                         )
                 );
