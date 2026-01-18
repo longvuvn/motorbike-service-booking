@@ -5,6 +5,7 @@ import com.example.motorbike_be.dto.customer.request.CustomerUpdateRequest;
 import com.example.motorbike_be.dto.customer.response.CustomerResponse;
 import com.example.motorbike_be.dto.response.ApiResponse;
 import com.example.motorbike_be.services.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
+@Tag(name = "Customer API", description = "Customer API")
 public class CustomerController {
     private final CustomerService customerService;
 

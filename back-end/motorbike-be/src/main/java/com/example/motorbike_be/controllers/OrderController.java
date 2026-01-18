@@ -6,6 +6,7 @@ import com.example.motorbike_be.dto.order.request.OrderUpdateRequest;
 import com.example.motorbike_be.dto.order.response.OrderResponse;
 import com.example.motorbike_be.dto.response.ApiResponse;
 import com.example.motorbike_be.services.OrderService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
+@Tag(name = "Order API", description = "Order API")
 public class OrderController {
 
     private final OrderService orderService;

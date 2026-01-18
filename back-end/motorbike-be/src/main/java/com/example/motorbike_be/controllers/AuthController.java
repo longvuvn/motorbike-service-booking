@@ -7,6 +7,8 @@ import com.example.motorbike_be.dto.customer.request.CustomerRequest;
 import com.example.motorbike_be.dto.customer.response.CustomerResponse;
 import com.example.motorbike_be.dto.response.ApiResponse;
 import com.example.motorbike_be.services.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Auth Controller", description = "API for Auth")
 public class AuthController {
 
     private final AuthService authService;
 
+    @Operation(summary = "Register", description = "Register Account")
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<CustomerResponse>> register(@Valid @RequestBody CustomerRequest customerRequest){
         CustomerResponse response = authService.register(customerRequest);
@@ -33,6 +37,7 @@ public class AuthController {
         );
     }
 
+    @Operation(summary = "Login", description = "Authenticate user and return access token + refresh token")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody AuthRequest authRequest){
         AuthResponse response = authService.login(authRequest);

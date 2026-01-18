@@ -6,6 +6,7 @@ import com.example.motorbike_be.dto.address.request.UnDefaultAddressRequest;
 import com.example.motorbike_be.dto.address.response.AddressResponse;
 import com.example.motorbike_be.dto.response.ApiResponse;
 import com.example.motorbike_be.services.AddressService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/address")
 @RequiredArgsConstructor
+@Tag(name = "Address Controller", description = "Address Controller API")
 public class AddressController {
 
     private final AddressService addressService;

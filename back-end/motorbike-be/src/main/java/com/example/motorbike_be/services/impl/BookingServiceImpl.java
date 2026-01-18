@@ -8,6 +8,7 @@ import com.example.motorbike_be.dto.booking.response.BookingServiceResponse;
 import com.example.motorbike_be.enums.BookingStatus;
 import com.example.motorbike_be.models.Booking;
 import com.example.motorbike_be.models.Customer;
+import com.example.motorbike_be.models.Pagination;
 import com.example.motorbike_be.models.Services;
 import com.example.motorbike_be.repositories.BookingRepository;
 import com.example.motorbike_be.repositories.BookingServiceRepository;
@@ -16,6 +17,9 @@ import com.example.motorbike_be.repositories.ServiceRepository;
 import com.example.motorbike_be.services.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -35,20 +39,22 @@ public class BookingServiceImpl implements BookingService {
     private final ServiceRepository serviceRepository;
 
     @Override
-    public List<BookingResponse> getAllBookingOfCustomer(String customerId) {
+    public Pagination<BookingResponse> getAllBookingOfCustomer(String customerId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         UUID customerUuid = UUID.fromString(customerId);
-        List<Booking> bookings = bookingRepository.findByCustomerId(customerUuid)
+        Page<Booking> bookings = bookingRepository.findByCustomerId(customerUuid, pageable)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
-        return bookings.stream().map(booking ->{
-            BookingResponse response = modelMapper.map(booking, BookingResponse.class);
-            List<BookingServiceResponse> serviceResponses =
-                    booking.getBookingServices()
+        List<BookingResponse> responses = bookings
+                .stream().map(booking -> {
+                    BookingResponse bookingResponse = modelMapper.map(booking, BookingResponse.class);
+                    List<BookingServiceResponse> bookingServiceResponses = booking.getBookingServices()
                             .stream()
-                            .map(bookingService -> modelMapper.map(bookingService, BookingServiceResponse.class))
-                    .collect(Collectors.toList());
-            response.setBookingServiceResponses(serviceResponses);
-            return response;
-        }).collect(Collectors.toList());
+                            .map(bookingServiceResponse -> modelMapper.map(bookingServiceResponse, BookingServiceResponse.class))
+                            .collect(Collectors.toList());
+                    bookingResponse.setBookingServiceResponses(bookingServiceResponses);
+                    return bookingResponse;
+                }).collect(Collectors.toList());
+        return Pagination.of(bookings, responses);
     }
 
     @Override
