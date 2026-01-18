@@ -25,15 +25,12 @@ public class Services extends Auditing {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Tên dịch vụ không được để trống")
     @Column(nullable = false, length = 255, unique = true)
     private String serviceName;
 
-    @NotBlank(message = "Mô tả không được để trống")
     @Column(nullable = false, length = 1000)
     private String description;
 
-    @NotBlank(message = "Ảnh không được để trống")
     @Column(nullable = false)
     private String image;
 

@@ -5,7 +5,9 @@ import com.example.motorbike_be.dto.booking.request.BookingRequest;
 import com.example.motorbike_be.dto.booking.request.BookingUpdateRequest;
 import com.example.motorbike_be.dto.booking.response.BookingResponse;
 import com.example.motorbike_be.dto.response.ApiResponse;
+import com.example.motorbike_be.models.Pagination;
 import com.example.motorbike_be.services.BookingService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,13 +19,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/bookings")
 @RequiredArgsConstructor
+@Tag(name = "Booking API", description = "Booking API")
 public class BookingController {
 
     private final BookingService bookingService;
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<ApiResponse<List<BookingResponse>>> getAll(@Valid @PathVariable String customerId){
-        List<BookingResponse> response = bookingService.getAllBookingOfCustomer(customerId);
+    public ResponseEntity<ApiResponse<Pagination<BookingResponse>>> getAll(
+            @Valid
+            @PathVariable String customerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+        Pagination<BookingResponse> response = bookingService.getAllBookingOfCustomer(customerId, page, size);
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         HttpStatus.OK.value(),

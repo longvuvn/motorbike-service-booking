@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: motorbike-be
+
+  #database
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+#port
+server:
+  port: ${PORT_SERVER}
+
+#jwt
+jwt:
+  secret: ${JWT_SECRET}
+  expiration:
+    access-token: ${ACCESS_TOKEN_EXPIRATION}
+    refresh-token: ${REFRESH_TOKEN_EXPIRATION}
+
+#Cloudinary
+Cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+
+#Gemini
+Gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+    url: ${GEMINI_API_URL}
+
+#swagger
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+OpenAPI:
+  service:
+    api-docs: motorbike-be-api
+    title: Motorbike-be API Document
+    version: 1.0.0
+    server: ${SERVER_URL}
+
+
+

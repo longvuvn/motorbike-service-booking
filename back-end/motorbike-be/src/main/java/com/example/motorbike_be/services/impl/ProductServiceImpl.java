@@ -6,6 +6,7 @@ import com.example.motorbike_be.dto.product.request.ProductUpdateRequest;
 import com.example.motorbike_be.dto.product.response.ProductResponse;
 import com.example.motorbike_be.enums.ProductStatus;
 import com.example.motorbike_be.models.CategoryProduct;
+import com.example.motorbike_be.models.Pagination;
 import com.example.motorbike_be.models.Product;
 import com.example.motorbike_be.repositories.CategoryProductRepository;
 import com.example.motorbike_be.repositories.ProductRepository;
@@ -15,14 +16,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -35,11 +38,13 @@ public class ProductServiceImpl implements ProductService {
     private final CloudinaryService cloudinaryService;
 
     @Override
-    public List<ProductResponse>  getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
+    public Pagination<ProductResponse> getAllProduct(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPagination = productRepository.findAllProduct(pageable);
+        List<ProductResponse> responses= productPagination
                 .map(product -> modelMapper.map(product, ProductResponse.class))
-                .collect(Collectors.toList());
+                .getContent();
+        return Pagination.of(productPagination, responses);
     }
 
     @Override
@@ -68,8 +73,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(String id, ProductUpdateRequest updateRequest) {
+    public ProductResponse updateProduct(String id, ProductUpdateRequest updateRequest, MultipartFile image) throws IOException{
         UUID productId = UUID.fromString(id);
+        String imageUrl = cloudinaryService.uploadImage(image);
         UUID categoryId = UUID.fromString(updateRequest.getCategoryId());
         Instant now = Instant.now();
         Product product = productRepository.findById(productId)
@@ -78,6 +84,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Category product not found"));
         modelMapper.map(updateRequest, product);
         product.setCategoryProduct(categoryProduct);
+        product.setImage(imageUrl);
         product.setUpdatedAt(now);
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductResponse.class);
@@ -89,5 +96,30 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(uuid)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         productRepository.delete(product);
+    }
+
+    @Override
+    public Pagination<ProductResponse> searchProduct(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPagination = productRepository.searchProductByName(name, pageable)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        List<ProductResponse> responses = productPagination
+                .map(product -> modelMapper.map(product, ProductResponse.class))
+                .getContent();
+        return Pagination.of(productPagination, responses);
+    }
+
+    @Override
+    public Pagination<ProductResponse> getProductByCategory(String categoryId, int page, int size) {
+        UUID uuid = UUID.fromString(categoryId);
+        if (!categoryProductRepository.existsById(uuid)) {
+            throw new RuntimeException("Category not found");
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = productRepository.findByCategoryProductId(uuid, pageable);
+        List<ProductResponse> responses = productPage
+                .map(product -> modelMapper.map(product, ProductResponse.class))
+                .getContent();
+        return Pagination.of(productPage, responses);
     }
 }

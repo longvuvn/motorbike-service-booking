@@ -6,6 +6,7 @@ import com.example.motorbike_be.dto.invoice.request.booking.InvoiceBookingUpdate
 import com.example.motorbike_be.dto.invoice.response.booking.InvoiceBookingResponse;
 import com.example.motorbike_be.dto.response.ApiResponse;
 import com.example.motorbike_be.services.InvoiceBookingService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/invoice-booking")
 @RequiredArgsConstructor
+@Tag(name = "Invoice Booking API", description = "Invoice Booking API")
 public class InvoiceBookingController {
 
 
